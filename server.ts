@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
