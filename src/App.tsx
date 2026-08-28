@@ -223,7 +223,7 @@ export default function App() {
     <div className={`min-h-screen transition-colors ${
       accessibilitySettings.highContrast 
         ? 'dark bg-black text-white font-sans' 
-        : 'bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans'
+        : 'bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans'
     } ${fontSizeClass}`}>
       {/* Top Prototype Trust Notice Banner */}
       <TrustBanner />
