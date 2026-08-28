@@ -1,0 +1,6 @@
+{
+  "name": "NyayaPath",
+  "description": "Citizen-first case understanding layer turning structured eCourts case updates and orders into simple timelines, plain-language explanations, and clear next steps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["SERVER_SIDE_OPENAI_API"]
+}
