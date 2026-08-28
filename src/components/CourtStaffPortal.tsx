@@ -22,6 +22,7 @@ interface CourtStaffPortalProps {
   cases: Case[];
   selectedCase: Case;
   onSelectCase: (c: Case) => void;
+  onCreateCase: (caseData: Omit<Case, 'id'>) => Case;
   onPublishEvent: (caseId: string, eventData: {
     eventType: EventType;
     eventDate: string;
@@ -36,6 +37,7 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
   cases,
   selectedCase,
   onSelectCase,
+  onCreateCase,
   onPublishEvent,
   onSwitchToCitizenView
 }) => {
@@ -51,6 +53,24 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
   const [nextHearingDate, setNextHearingDate] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [publishSuccess, setPublishSuccess] = useState(false);
+  const [caseSuccess, setCaseSuccess] = useState(false);
+  const [newCase, setNewCase] = useState({
+    cnr: 'DEMO-CNR-NEW-001-2026',
+    caseNumber: 'DEMO-CIV-NEW-001-2026',
+    caseType: 'Original Civil Suit (OS)',
+    court: 'Demo District Court, Hyderabad',
+    district: 'Hyderabad',
+    state: 'Telangana',
+    filingDate: '28 August 2026',
+    status: 'Active' as const,
+    nextHearingDate: '',
+    petitioner: 'Asha Rao (Fictional Party)',
+    petitionerAdvocate: 'Adv. Demo Petitioner',
+    respondent: 'Vikram Sen (Fictional Party)',
+    respondentAdvocate: 'Adv. Demo Respondent',
+    actSection: 'Synthetic civil proceeding',
+    subject: 'Synthetic contract dispute for demonstration'
+  });
 
   const eventTypeOptions: EventType[] = [
     'Oral Arguments',
@@ -60,8 +80,25 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
     'Written Statement Filed',
     'Issues Framed',
     'Notice Issued',
+    'Rejoinder Submissions',
     'Judgment Reserved'
   ];
+
+  const handleCreateCaseSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const created = onCreateCase(newCase);
+    setCaseSuccess(true);
+    setTimeout(() => setCaseSuccess(false), 4000);
+    setNewCase(prev => ({
+      ...prev,
+      cnr: `DEMO-CNR-NEW-${Math.floor(Math.random() * 900 + 100)}-2026`,
+      caseNumber: `DEMO-CIV-NEW-${Math.floor(Math.random() * 900 + 100)}-2026`
+    }));
+    setEventType('Case Filing');
+    setEventDate(created.filingDate);
+    setOfficialText('Plaint presented before registry. Scrutiny initiated.');
+    setNextHearingDate(created.nextHearingDate);
+  };
 
   const handleTemplateSelect = (text: string, type: EventType, nextDate: string) => {
     setOfficialText(text);
@@ -128,6 +165,13 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
         >
           <PlusCircle className="w-4 h-4 text-indigo-600" />
           Add Event
+        </a>
+        <a
+          href="#staff-create-case-form"
+          className="ml-2 inline-flex min-h-11 items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-500 text-white text-sm font-bold hover:bg-indigo-400 transition-colors"
+        >
+          <PlusCircle className="w-4 h-4" />
+          Create New Case
         </a>
 
         <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-200 text-xs flex items-center gap-2">
@@ -201,7 +245,48 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
         </div>
 
         {/* Right Side: Add Case Event Form (8 Cols) */}
-        <div id="staff-add-event-form" className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-28">
+        <div className="lg:col-span-8 space-y-6">
+        <div id="staff-create-case-form" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5 scroll-mt-28">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <PlusCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                Create New Synthetic Case
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Creates a separate case record. Events published after selection attach to that case only.
+              </p>
+            </div>
+            {caseSuccess && <span className="px-3 py-1.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold">New case selected</span>}
+          </div>
+          <form onSubmit={handleCreateCaseSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              ['caseNumber', 'Case Number'],
+              ['cnr', 'CNR'],
+              ['petitioner', 'Petitioner'],
+              ['respondent', 'Respondent'],
+              ['court', 'Court'],
+              ['filingDate', 'Filing Date'],
+              ['nextHearingDate', 'Next Hearing Date'],
+              ['subject', 'Subject']
+            ].map(([key, label]) => (
+              <label key={key} className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                {label}
+                <input
+                  value={(newCase as any)[key]}
+                  onChange={(e) => setNewCase(prev => ({ ...prev, [key]: e.target.value }))}
+                  className="mt-1 w-full min-h-11 p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required={key !== 'nextHearingDate'}
+                />
+              </label>
+            ))}
+            <button type="submit" className="sm:col-span-2 min-h-11 px-6 py-3 bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-700 text-white font-bold text-sm rounded-xl">
+              Create Case & Select It
+            </button>
+          </form>
+        </div>
+
+        <div id="staff-add-event-form" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-28">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -370,6 +455,7 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

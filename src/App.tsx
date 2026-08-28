@@ -140,6 +140,16 @@ export default function App() {
   };
 
   // Court Staff Event Publish
+  const handleCreateCase = (caseData: Omit<Case, 'id'>) => {
+    const newCase: Case = {
+      ...caseData,
+      id: `case-${Date.now()}`
+    };
+    setCases(prev => [...prev, newCase]);
+    setSelectedCaseId(newCase.id);
+    return newCase;
+  };
+
   const handlePublishEvent = async (caseId: string, eventData: {
     eventType: EventType;
     eventDate: string;
@@ -304,6 +314,7 @@ export default function App() {
             cases={cases}
             selectedCase={currentCase}
             onSelectCase={(c) => setSelectedCaseId(c.id)}
+            onCreateCase={handleCreateCase}
             onPublishEvent={handlePublishEvent}
             onSwitchToCitizenView={() => {
               setActiveTab('citizen');

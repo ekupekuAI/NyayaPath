@@ -6,6 +6,7 @@ import { createServer as createViteServer } from 'vite';
 import { DEMO_CASES, INITIAL_EVENTS, INITIAL_ORDERS, PRECOMPUTED_EXPLANATIONS } from './src/data/mockDatabase.ts';
 import { generateServerAIExplanation } from './src/lib/serverOpenAIService.ts';
 import { CaseEvent } from './src/types.ts';
+import { Case } from './src/types.ts';
 
 // In-memory runtime state for live updates during the session
 let cases = [...DEMO_CASES];
@@ -58,6 +59,35 @@ async function startServer() {
       orders: caseOrders,
       explanations
     });
+  });
+
+  app.post('/api/cases', (req: Request, res: Response) => {
+    const required = ['cnr', 'caseNumber', 'caseType', 'court', 'district', 'state', 'filingDate', 'status', 'petitioner', 'respondent', 'subject'];
+    const missing = required.filter((key) => !req.body[key]);
+    if (missing.length) {
+      return res.status(400).json({ error: `Missing required case fields: ${missing.join(', ')}` });
+    }
+
+    const newCase: Case = {
+      id: `case-${Date.now()}`,
+      cnr: req.body.cnr,
+      caseNumber: req.body.caseNumber,
+      caseType: req.body.caseType,
+      court: req.body.court,
+      district: req.body.district,
+      state: req.body.state,
+      filingDate: req.body.filingDate,
+      status: req.body.status,
+      nextHearingDate: req.body.nextHearingDate || '',
+      petitioner: req.body.petitioner,
+      petitionerAdvocate: req.body.petitionerAdvocate || 'Synthetic advocate',
+      respondent: req.body.respondent,
+      respondentAdvocate: req.body.respondentAdvocate || 'Synthetic advocate',
+      actSection: req.body.actSection || 'Synthetic proceeding',
+      subject: req.body.subject
+    };
+    cases.push(newCase);
+    res.status(201).json({ case: newCase });
   });
 
   // Staff Portal: Add and publish a new synthetic case event

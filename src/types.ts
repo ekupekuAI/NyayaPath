@@ -39,6 +39,7 @@ export type EventType =
   | 'Oral Arguments'
   | 'Interlocutory Order'
   | 'Final Arguments Listed'
+  | 'Rejoinder Submissions'
   | 'Judgment Reserved';
 
 export interface CaseEvent {
