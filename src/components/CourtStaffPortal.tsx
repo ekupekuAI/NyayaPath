@@ -131,10 +131,10 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
   return (
     <div className="space-y-8">
       {/* Staff Header & Warning Banner */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-4">
+      <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
+            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center text-white shadow-sm">
               <Scale className="w-6 h-6" />
             </div>
             <div>
@@ -246,7 +246,7 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
 
         {/* Right Side: Add Case Event Form (8 Cols) */}
         <div className="lg:col-span-8 space-y-6">
-        <div id="staff-create-case-form" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5 scroll-mt-28">
+        <div id="staff-create-case-form" className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5 scroll-mt-28">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -280,13 +280,13 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
                 />
               </label>
             ))}
-            <button type="submit" className="sm:col-span-2 min-h-11 px-6 py-3 bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-700 text-white font-bold text-sm rounded-xl">
+            <button type="submit" className="sm:col-span-2 min-h-11 px-6 py-3 bg-blue-900 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-700 text-white font-bold text-sm rounded-lg">
               Create Case & Select It
             </button>
           </form>
         </div>
 
-        <div id="staff-add-event-form" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-28">
+        <div id="staff-add-event-form" className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-28">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -433,7 +433,7 @@ export const CourtStaffPortal: React.FC<CourtStaffPortalProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                  className="w-full sm:w-auto min-h-11 px-6 py-3 bg-blue-900 hover:bg-blue-800 active:bg-blue-950 text-white font-bold text-xs sm:text-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                 >
                   <Send className={`w-4 h-4 ${isSubmitting ? 'animate-spin' : ''}`} />
                   <span>{isSubmitting ? 'Publishing & Generating AI...' : 'Publish Update to Portal'}</span>

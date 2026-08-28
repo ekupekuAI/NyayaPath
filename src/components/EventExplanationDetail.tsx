@@ -116,7 +116,7 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
       {/* Main 2-Section Grid (Official Record vs. Citizen Explanation) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* SECTION A: Official Record (4 Cols) */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
+        <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
             <div className="flex items-center gap-2">
               <Scale className="w-4 h-4 text-slate-600 dark:text-slate-400" />
@@ -186,11 +186,11 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
         </div>
 
         {/* SECTION B: Explained for You (7 Cols) */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border-2 border-indigo-200 dark:border-indigo-800/80 shadow-lg shadow-indigo-500/5 p-6 sm:p-8 space-y-6">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm p-6 sm:p-8 space-y-6">
           {/* Section B Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-900/40 pb-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-lg bg-blue-900 flex items-center justify-center text-white">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
@@ -198,7 +198,7 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
                   {t.explainedForYouTitle}
                 </h3>
                 <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium">
-                  Plain-Language Citizen Breakdown
+                  Record-grounded plain-language breakdown
                 </span>
               </div>
             </div>

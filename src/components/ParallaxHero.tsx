@@ -23,28 +23,28 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
   };
 
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 lg:pt-14 lg:pb-20 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
+    <section className="relative overflow-hidden pt-7 pb-12 lg:pt-10 lg:pb-16 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-4">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100/80 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-700/60 text-indigo-900 dark:text-indigo-200 text-xs font-semibold shadow-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-            <span>Independent Citizen Prototype - 100% Synthetic Data</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-blue-50 dark:bg-slate-900 border border-blue-100 dark:border-slate-700 text-blue-950 dark:text-blue-200 text-xs font-semibold">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-800 dark:text-blue-300" />
+            <span>Independent Citizen Prototype - 100% Synthetic Demo Data</span>
           </div>
 
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-            {t.heroHeadline}
+            Your case. Finally understandable.
           </h1>
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            {t.heroSubheadline}
+            Understand case updates, follow the timeline, and see what the available record says happens next.
           </p>
 
           {/* Instant Search Bar & CTA */}
           <div className="pt-4 max-w-2xl mx-auto">
-            <form onSubmit={handleSearchSubmit} className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-2 bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-indigo-500/5 border border-slate-200 dark:border-slate-700">
+            <form onSubmit={handleSearchSubmit} className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
               <div className="relative flex-1 flex items-center pl-3">
                 <Search className="w-5 h-5 text-slate-400 shrink-0" />
                 <input
@@ -59,7 +59,7 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
               <button
                 id="search-case-submit-btn"
                 type="submit"
-                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+                className="min-h-11 px-6 py-3 bg-blue-900 hover:bg-blue-800 active:bg-blue-950 text-white rounded-lg font-semibold text-sm sm:text-base flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
               >
                 <span>{t.searchButton}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -72,7 +72,7 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
               <button
                 id="chip-demo-case-184"
                 onClick={() => onSelectCase('case-cs-184-2024')}
-                className="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 rounded-lg border border-indigo-200 dark:border-indigo-800/60 font-semibold transition-all shadow-2xs flex items-center gap-1.5"
+                className="min-h-11 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-blue-800 dark:text-blue-300 rounded-lg border border-blue-200 dark:border-slate-700 font-semibold transition-all shadow-2xs flex items-center gap-1.5"
               >
                 <Scale className="w-3.5 h-3.5 text-indigo-500" />
                 Civil Suit 184/2024 (Hyderabad)
@@ -90,7 +90,7 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
 
         {/* 4 Core Pillars Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
-          <div className="p-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-md transition-shadow">
+          <div className="p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-sm transition-shadow">
             <div className="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-3">
               <FileCheck className="w-5 h-5" />
             </div>
@@ -100,7 +100,7 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
             </p>
           </div>
 
-          <div className="p-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-md transition-shadow">
+          <div className="p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-sm transition-shadow">
             <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3">
               <Clock className="w-5 h-5" />
             </div>
@@ -110,18 +110,18 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
             </p>
           </div>
 
-          <div className="p-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-md transition-shadow">
+          <div className="p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-sm transition-shadow">
             <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-sm text-slate-900 dark:text-white">100% Grounded Safety</h3>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">Record-Grounded Safety</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-              Strictly non-hallucinatory. Never predicts case results, never invents facts, never gives unauthorized legal advice.
+              Uses supplied records only. Never predicts case results, invents facts, or gives legal advice.
             </p>
           </div>
 
-          <div className="p-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-md transition-shadow">
-            <div className="w-9 h-9 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-3">
+          <div className="p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-sm transition-shadow">
+            <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 flex items-center justify-center mb-3">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <h3 className="font-bold text-sm text-slate-900 dark:text-white">Timeline-First Journey</h3>

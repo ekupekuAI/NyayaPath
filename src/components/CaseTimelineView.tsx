@@ -102,7 +102,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
       </div>
 
       {/* Vertical Timeline Structure */}
-      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-gradient-to-b before:from-indigo-500 before:via-slate-300 dark:before:via-slate-700 before:to-emerald-500">
+      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-slate-300 dark:before:bg-slate-700">
         {filteredEvents.map((evt, index) => {
           const isLatest = index === filteredEvents.length - 1;
           const explanation = explanations[evt.id];
@@ -115,11 +115,11 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
               {/* Timeline Node Marker */}
               <div className={`absolute -left-[27px] sm:-left-[31px] top-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-4 flex items-center justify-center transition-all ${
                 isLatest
-                  ? 'bg-indigo-600 border-indigo-200 dark:border-indigo-900 text-white shadow-md shadow-indigo-500/30'
+                  ? 'bg-blue-900 border-blue-200 dark:border-blue-900 text-white shadow-sm'
                   : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 group-hover:border-indigo-400'
               }`}>
                 {isLatest ? (
-                  <CircleDot className="w-3.5 h-3.5 animate-pulse" />
+                  <CircleDot className="w-3.5 h-3.5" />
                 ) : (
                   <CheckCircle className="w-3.5 h-3.5" />
                 )}
@@ -130,7 +130,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
                 onClick={() => onSelectEvent(evt)}
                 className={`p-5 sm:p-6 rounded-2xl border transition-all cursor-pointer ${
                   isLatest
-                    ? 'bg-white dark:bg-slate-900 border-indigo-300 dark:border-indigo-800 shadow-md shadow-indigo-500/5 ring-1 ring-indigo-500/20'
+                    ? 'bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-800 shadow-sm ring-1 ring-blue-900/10'
                     : 'bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-2xs hover:shadow-sm'
                 }`}
               >
@@ -139,7 +139,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
                     <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono">
                       {evt.eventDate}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                    <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                       {evt.eventType}
                     </span>
                     {isLatest && (
@@ -164,9 +164,9 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
                 </div>
 
                 {/* Plain-Language Takeaway */}
-                <div className="mt-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5">
+                <div className="mt-3 p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 dark:text-indigo-300">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-blue-800 dark:text-blue-300" />
                     <span>Citizen Explanation Takeaway</span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
@@ -196,7 +196,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
               <Clock className="w-3.5 h-3.5" />
             </div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-300/60 dark:border-emerald-800/60">
+            <div className="p-5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-300/60 dark:border-emerald-800/60">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">

@@ -22,18 +22,18 @@ export const Header: React.FC<HeaderProps> = ({
   isResetting
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo & Product Identity */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('citizen')}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-900 flex items-center justify-center text-white shadow-sm">
               <Scale className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  Nyaya<span className="text-indigo-600 dark:text-indigo-400">Path</span>
+                  Nyaya<span className="text-blue-800 dark:text-blue-300">Path</span>
                 </span>
                 <span className="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 rounded-full border border-emerald-300 dark:border-emerald-700/50">
                   Citizen Layer

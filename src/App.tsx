@@ -223,7 +223,7 @@ export default function App() {
     <div className={`min-h-screen transition-colors ${
       accessibilitySettings.highContrast 
         ? 'dark bg-black text-white font-sans' 
-        : 'bg-slate-100/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans'
+        : 'bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans'
     } ${fontSizeClass}`}>
       {/* Top Prototype Trust Notice Banner */}
       <TrustBanner />
@@ -240,7 +240,7 @@ export default function App() {
       />
 
       {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-8">
         {/* SURFACE 1: CITIZEN PORTAL */}
         {activeTab === 'citizen' && (
           <div className="space-y-8 animate-fadeIn">
@@ -325,7 +325,7 @@ export default function App() {
       </main>
 
       {/* Floating Quick Action Footer */}
-      <footer className="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md py-6">
+      <footer className="mt-14 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-900 dark:text-white">NyayaPath</span>

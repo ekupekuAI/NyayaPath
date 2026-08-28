@@ -42,13 +42,13 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
   const speechContent = `${t.recentUpdate}. ${t.whatHappenedTitle} ${explanation?.what_happened || latestEvent?.officialText}. ${t.whatItMeansTitle} ${explanation?.what_it_means}. ${t.actionTitle} ${explanation?.action_required}. ${t.importantDateTitle} ${caseData.nextHearingDate}.`;
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md shadow-slate-200/50 dark:shadow-none overflow-hidden transition-all">
+    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-all">
       {/* Header Bar */}
-      <div className="bg-slate-50 dark:bg-slate-800/60 p-6 sm:p-8 border-b border-slate-200 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 border-b border-slate-200 dark:border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/60 text-indigo-800 dark:text-indigo-300 font-bold text-xs rounded-full uppercase tracking-wider">
+              <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 font-bold text-xs rounded-md uppercase tracking-wider border border-blue-100 dark:border-blue-900">
                 {caseData.caseType}
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 font-bold text-xs rounded-full">
@@ -72,11 +72,11 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
 
           {/* Quick Date Highlights */}
           <div className="flex items-center gap-3">
-            <div className="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xs">
+            <div className="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg border border-blue-100 dark:border-slate-700 shadow-2xs">
               <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 Next Hearing
               </div>
-              <div className="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5 mt-0.5">
+              <div className="text-base sm:text-lg font-bold text-blue-900 dark:text-blue-200 flex items-center gap-1.5 mt-0.5">
                 <Calendar className="w-4 h-4" />
                 {caseData.nextHearingDate || 'To be notified'}
               </div>
@@ -149,9 +149,9 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
         {/* 4 Prominent Citizen Answers */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {/* Card 1: What happened? */}
-          <div className="p-5 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 space-y-2">
-            <div className="flex items-center gap-2 text-indigo-900 dark:text-indigo-300 font-bold text-sm">
-              <HelpCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+          <div className="p-5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2 shadow-xs">
+            <div className="flex items-center gap-2 text-blue-950 dark:text-blue-200 font-extrabold text-sm uppercase tracking-wide">
+              <HelpCircle className="w-4 h-4 text-blue-800 dark:text-blue-300" />
               <span>{t.whatHappenedTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -160,9 +160,9 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
           </div>
 
           {/* Card 2: What does it mean? */}
-          <div className="p-5 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 space-y-2">
-            <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-300 font-bold text-sm">
-              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <div className="p-5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2 shadow-xs">
+            <div className="flex items-center gap-2 text-blue-950 dark:text-blue-200 font-extrabold text-sm uppercase tracking-wide">
+              <Sparkles className="w-4 h-4 text-teal-700 dark:text-teal-300" />
               <span>{t.whatItMeansTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -170,9 +170,9 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40 space-y-2">
-            <div className="flex items-center gap-2 text-sky-900 dark:text-sky-300 font-bold text-sm">
-              <Calendar className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+          <div className="p-5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2 shadow-xs">
+            <div className="flex items-center gap-2 text-blue-950 dark:text-blue-200 font-extrabold text-sm uppercase tracking-wide">
+              <Calendar className="w-4 h-4 text-blue-800 dark:text-blue-300" />
               <span>{t.whatNextTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -181,9 +181,9 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
           </div>
 
           {/* Card 3: Do you need to act? */}
-          <div className="p-5 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40 space-y-2">
-            <div className="flex items-center gap-2 text-amber-900 dark:text-amber-300 font-bold text-sm">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+          <div className="p-5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2 shadow-xs">
+            <div className="flex items-center gap-2 text-blue-950 dark:text-blue-200 font-extrabold text-sm uppercase tracking-wide">
+              <AlertCircle className="w-4 h-4 text-amber-700 dark:text-amber-300" />
               <span>{t.actionTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
@@ -208,7 +208,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
           <button
             id="view-full-timeline-btn"
             onClick={onViewTimeline}
-            className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer"
+            className="w-full sm:w-auto min-h-11 px-6 py-3 bg-blue-900 hover:bg-blue-800 active:bg-blue-950 text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer"
           >
             <span>Inspect Full Chronological Timeline</span>
             <ArrowRight className="w-4 h-4" />

@@ -72,7 +72,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
           </button>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-              Court Orders & Judgments
+              Orders & Documents
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               {caseData.caseNumber} • {orders.length} Synthetic Order Sheets on Record
@@ -152,7 +152,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
                 id="explain-order-btn"
                 onClick={() => handleExplain(activeOrder)}
                 disabled={isExplaining}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="min-h-11 px-4 py-2 bg-blue-900 hover:bg-blue-800 active:bg-blue-950 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
               >
                 <Sparkles className={`w-3.5 h-3.5 ${isExplaining ? 'animate-spin' : ''}`} />
                 <span>{isExplaining ? 'Analyzing...' : 'Explain This Order'}</span>
@@ -162,7 +162,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
 
           {/* AI Explanation Accordion (if requested) */}
           {orderExplanation && (
-            <div className="p-6 bg-gradient-to-br from-indigo-50/90 via-white to-emerald-50/50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-emerald-950/20 rounded-3xl border-2 border-indigo-300 dark:border-indigo-700/80 shadow-md space-y-4">
+            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm space-y-4">
               <div className="flex items-center gap-2 text-indigo-900 dark:text-indigo-300 font-extrabold text-sm">
                 <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 <span>Citizen Explanation for Order dated {activeOrder.orderDate}</span>
@@ -198,11 +198,11 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
           )}
 
           {/* Authentic Synthetic Court Order Paper View */}
-          <div className="bg-[#fcfaf5] dark:bg-slate-950 text-slate-900 dark:text-slate-100 rounded-3xl border border-amber-200/80 dark:border-slate-800 p-8 sm:p-12 shadow-sm font-serif relative">
+          <div className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 rounded-xl border border-slate-300 dark:border-slate-800 p-8 sm:p-12 shadow-sm font-serif relative">
             <div className="text-center space-y-2 border-b-2 border-slate-900 dark:border-slate-700 pb-6 mb-6">
               <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-sans font-bold text-slate-600 dark:text-slate-400">
                 <Scale className="w-4 h-4" />
-                <span>Synthetic Court Record • For Demonstration Only</span>
+                <span>Synthetic demo document • For demonstration only</span>
               </div>
               <h3 className="text-base sm:text-lg font-bold uppercase tracking-wide">
                 IN THE COURT OF THE PRINCIPAL DISTRICT & SESSIONS JUDGE, HYDERABAD
@@ -217,7 +217,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-300 dark:border-slate-800 flex justify-between items-center text-xs font-sans text-slate-500 dark:text-slate-400">
-              <span>Digital Order Sheet Copy (Verified Mock)</span>
+              <span>Synthetic demo document</span>
               <span>Page 1 of {activeOrder.totalPages}</span>
             </div>
           </div>
