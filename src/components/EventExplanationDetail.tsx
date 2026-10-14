@@ -30,6 +30,8 @@ interface EventExplanationDetailProps {
   onSpeak: (text: string) => void;
   isSpeaking: boolean;
   onRegenerateExplanation: (eventId: string, lang: string) => Promise<void>;
+  simplified: boolean;
+  onToggleSimplified: (value: boolean) => void;
   language: LanguageCode;
 }
 
@@ -43,10 +45,12 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
   onSpeak,
   isSpeaking,
   onRegenerateExplanation,
+  simplified,
+  onToggleSimplified,
   language
 }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [simplifiedLevel, setSimplifiedLevel] = useState<'standard' | 'simple'>('standard');
+  const notSpecified = 'The available case information does not specify this.';
   const t = MULTILINGUAL_TRANSLATIONS[language]?.['general'] || MULTILINGUAL_TRANSLATIONS.en['general'];
 
   const handleRefresh = async () => {
@@ -59,7 +63,9 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
   };
 
   const isUnavailable = explanation?.source === 'unavailable';
-  const explanationTextToRead = `${t.whatHappenedTitle} ${explanation?.what_happened}. ${t.whatItMeansTitle} ${explanation?.what_it_means}. ${t.whatNextTitle} ${explanation?.what_happens_next}. ${t.actionTitle} ${explanation?.action_required}. ${t.importantDateTitle}: ${explanation?.important_date}.`;
+  const explanationTextToRead = simplified
+    ? `${explanation?.summary || ''}. ${t.actionTitle} ${explanation?.action_required || notSpecified}. ${t.importantDateTitle}: ${explanation?.important_date || event.nextHearingDate || 'None specified'}.`
+    : `${t.whatHappenedTitle} ${explanation?.what_happened}. ${t.whatItMeansTitle} ${explanation?.what_it_means}. ${t.whatNextTitle} ${explanation?.what_happens_next}. ${t.actionTitle} ${explanation?.action_required}. ${t.importantDateTitle}: ${explanation?.important_date}.`;
 
   return (
     <div className="space-y-6">
@@ -205,9 +211,10 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
 
             <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs">
               <button
-                onClick={() => setSimplifiedLevel('standard')}
+                onClick={() => onToggleSimplified(false)}
+                aria-pressed={!simplified}
                 className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                  simplifiedLevel === 'standard'
+                  !simplified
                     ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 font-bold shadow-2xs'
                     : 'text-slate-600 dark:text-slate-400'
                 }`}
@@ -215,9 +222,10 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
                 Standard
               </button>
               <button
-                onClick={() => setSimplifiedLevel('simple')}
+                onClick={() => onToggleSimplified(true)}
+                aria-pressed={simplified}
                 className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                  simplifiedLevel === 'simple'
+                  simplified
                     ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 font-bold shadow-2xs'
                     : 'text-slate-600 dark:text-slate-400'
                 }`}
@@ -233,8 +241,31 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
             </div>
           )}
 
+          {explanation?.source === 'fallback' && (
+            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-100">
+              <strong>Rule-based summary.</strong>{' '}
+              {explanation.error?.includes('OPENAI_API_KEY')
+                ? 'AI explanations are off: add OPENAI_API_KEY to the server .env file and restart to enable them (including other languages).'
+                : explanation.error
+                ? `${explanation.error} Showing a rule-based summary of the record instead.`
+                : 'Generated from the record text without AI. Use the refresh button to request an AI explanation (needs OPENAI_API_KEY on the server).'}
+            </div>
+          )}
+
+          {/* Super Simple mode: one-line summary plus the action only */}
+          {simplified && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 space-y-3">
+              <p className="text-base text-slate-900 dark:text-white leading-relaxed font-semibold">
+                {explanation?.summary || notSpecified}
+              </p>
+              <p className="text-sm text-slate-800 dark:text-slate-200">
+                <strong>{t.actionTitle}</strong> {explanation?.action_required || notSpecified}
+              </p>
+            </div>
+          )}
+
           {/* 4 Core Plain-Language Answer Boxes */}
-          <div className="space-y-4">
+          <div className={`space-y-4 ${simplified ? 'hidden' : ''}`}>
             {/* Box 1: What happened? */}
             <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 space-y-1.5">
               <div className="flex items-center gap-2 text-indigo-900 dark:text-indigo-300 font-bold text-sm">
@@ -242,7 +273,7 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
                 <span>{t.whatHappenedTitle}</span>
               </div>
               <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-                {explanation?.what_happened || 'The hearing took place, but the case was not finally decided.'}
+                {explanation?.what_happened || notSpecified}
               </p>
             </div>
 
@@ -253,7 +284,7 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
                 <span>{t.whatItMeansTitle}</span>
               </div>
               <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-                {explanation?.what_it_means || 'The respondent\'s lawyer asked for more time to submit written arguments.'}
+                {explanation?.what_it_means || notSpecified}
               </p>
             </div>
 
@@ -264,7 +295,7 @@ export const EventExplanationDetail: React.FC<EventExplanationDetailProps> = ({
                 <span>{t.whatNextTitle}</span>
               </div>
               <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-                {explanation?.what_happens_next || 'The case is listed again for final arguments on 14 September 2026.'}
+                {explanation?.what_happens_next || notSpecified}
               </p>
             </div>
 

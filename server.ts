@@ -9,10 +9,11 @@ import { CaseEvent } from './src/types.ts';
 import { Case } from './src/types.ts';
 
 // In-memory runtime state for live updates during the session
-let cases = [...DEMO_CASES];
-let events: CaseEvent[] = [...INITIAL_EVENTS];
-let orders = [...INITIAL_ORDERS];
-let explanations = { ...PRECOMPUTED_EXPLANATIONS };
+// Deep copies so runtime edits (e.g. nextHearingDate) never mutate the seed and reset restores it.
+let cases = structuredClone(DEMO_CASES);
+let events: CaseEvent[] = structuredClone(INITIAL_EVENTS);
+let orders = structuredClone(INITIAL_ORDERS);
+let explanations = structuredClone(PRECOMPUTED_EXPLANATIONS);
 
 async function startServer() {
   const app = express();
@@ -22,7 +23,7 @@ async function startServer() {
 
   // API Routes
   app.get('/api/health', (req: Request, res: Response) => {
-    res.json({ status: 'ok', product: 'NyayaPath', environment: 'production' });
+    res.json({ status: 'ok', product: 'NyayaPath', aiConfigured: Boolean(process.env.OPENAI_API_KEY) });
   });
 
   // Get all cases or search by CNR/query
@@ -145,6 +146,9 @@ async function startServer() {
     if ((!event || !event.officialText) && !order) {
       return res.status(400).json({ error: 'Event or Order reference required' });
     }
+    if (typeof event?.officialText === 'string' && event.officialText.length > 4000) {
+      return res.status(413).json({ error: 'Official text is too long to explain.' });
+    }
 
     const targetEvent: CaseEvent = event || {
       id: `order-evt-${order!.id}`,
@@ -165,10 +169,10 @@ async function startServer() {
 
   // Reset database state back to initial seed (useful for live judge demos)
   app.post('/api/reset-demo', (req: Request, res: Response) => {
-    cases = [...DEMO_CASES];
-    events = [...INITIAL_EVENTS];
-    orders = [...INITIAL_ORDERS];
-    explanations = { ...PRECOMPUTED_EXPLANATIONS };
+    cases = structuredClone(DEMO_CASES);
+    events = structuredClone(INITIAL_EVENTS);
+    orders = structuredClone(INITIAL_ORDERS);
+    explanations = structuredClone(PRECOMPUTED_EXPLANATIONS);
     res.json({ message: 'Demo database reset successfully.' });
   });
 

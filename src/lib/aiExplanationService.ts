@@ -1,4 +1,4 @@
-import { AIExplanation, Case, CaseEvent } from '../types';
+import { AIExplanation, Case, CaseEvent, Order } from '../types';
 
 export const AI_SYSTEM_INSTRUCTION = `You are NyayaPath AI, an objective citizen-side case understanding engine for Indian legal case events and orders.
 You convert structured eCourts case updates into plain-language, non-technical explanations for ordinary citizens.
@@ -27,7 +27,7 @@ export const AI_RESPONSE_SCHEMA = {
   required: ['summary', 'what_happened', 'what_it_means', 'what_happens_next', 'action_required', 'important_date', 'uncertainty_note', 'disclaimer']
 };
 
-const DISCLAIMER = 'This is a plain-language explanation of the supplied case information, not legal advice.';
+export const DISCLAIMER = 'This is a plain-language explanation of the supplied case information, not legal advice.';
 const NOT_SPECIFIED = 'The available case information does not specify this.';
 const ACTION_NOT_SPECIFIED = 'The available case information does not specify an action required from you.';
 
@@ -75,16 +75,16 @@ export function createFallbackExplanation(event: CaseEvent): AIExplanation {
     whatHappened = 'Arguments were presented before the judge. One of the parties requested time to submit written legal arguments.';
     whatItMeans = 'The case is approaching the final decision stage, but the judge will first examine written argument submissions.';
     whatNext = event.nextHearingDate ? `The case is listed for final arguments on ${date}.` : NOT_SPECIFIED;
-  } else if (text.includes('evidence') || text.includes('cross-examination') || text.includes('pw-1')) {
-    summary = 'Witness examination and documentary evidence were recorded.';
-    whatHappened = 'Witnesses presented their statements and were questioned under cross-examination.';
-    whatItMeans = 'The factual evidence phase is being conducted to verify party claims.';
-    whatNext = event.nextHearingDate ? `Next hearing scheduled on ${date}.` : NOT_SPECIFIED;
   } else if (text.includes('issues framed')) {
     summary = 'The court framed the key points of dispute (issues) to be decided.';
     whatHappened = 'The judge reviewed the claims and identified the specific legal questions for trial.';
     whatItMeans = 'These framed issues determine what evidence both sides must prove.';
     whatNext = event.nextHearingDate ? `Listed on ${date} for presenting evidence.` : NOT_SPECIFIED;
+  } else if (text.includes('evidence') || text.includes('cross-examination') || text.includes('pw-1')) {
+    summary = 'Witness examination and documentary evidence were recorded.';
+    whatHappened = 'Witnesses presented their statements and were questioned under cross-examination.';
+    whatItMeans = 'The factual evidence phase is being conducted to verify party claims.';
+    whatNext = event.nextHearingDate ? `Next hearing scheduled on ${date}.` : NOT_SPECIFIED;
   } else if (text.includes('summons') || text.includes('registration') || text.includes('registered')) {
     summary = 'The case has been formally registered in the court system and notices were issued.';
     whatHappened = 'The registry verified documents and officially assigned a case number.';
@@ -130,5 +130,29 @@ export async function generateAIExplanation(
     return await response.json();
   } catch {
     return createUnavailableExplanation(event);
+  }
+}
+
+export async function generateOrderExplanation(order: Order, caseData: Case, targetLanguage: string = 'en'): Promise<AIExplanation> {
+  const orderEvent: CaseEvent = {
+    id: `order-evt-${order.id}`,
+    caseId: caseData.id,
+    eventType: 'Interlocutory Order',
+    eventDate: order.orderDate,
+    officialText: order.officialText,
+    status: 'Published',
+    createdBy: 'Order Scrutiny',
+    publishedAt: order.orderDate
+  };
+  try {
+    const response = await fetch('/api/explain', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: order.id, caseId: caseData.id, caseData, language: targetLanguage })
+    });
+    if (!response.ok) throw new Error('AI route unavailable');
+    return await response.json();
+  } catch {
+    return createUnavailableExplanation(orderEvent);
   }
 }

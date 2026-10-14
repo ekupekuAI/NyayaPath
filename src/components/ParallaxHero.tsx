@@ -5,18 +5,19 @@ import { MULTILINGUAL_TRANSLATIONS } from '../data/mockDatabase';
 
 interface ParallaxHeroProps {
   onSelectCase: (caseId: string) => void;
-  onSearch: (query: string) => void;
+  onSearch: (query: string) => boolean;
   language: LanguageCode;
 }
 
 export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSearch, language }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [notFound, setNotFound] = useState(false);
   const t = MULTILINGUAL_TRANSLATIONS[language]?.['general'] || MULTILINGUAL_TRANSLATIONS.en['general'];
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      onSearch(searchQuery.trim());
+      setNotFound(!onSearch(searchQuery.trim()));
     } else {
       onSelectCase('case-cs-184-2024');
     }
@@ -51,7 +52,10 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
                   id="cnr-search-input"
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setNotFound(false);
+                  }}
                   placeholder={t.searchPlaceholder}
                   className="w-full pl-3 pr-4 py-3 bg-transparent text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none"
                 />
@@ -65,6 +69,12 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = ({ onSelectCase, onSear
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
+
+            {notFound && (
+              <p role="alert" className="mt-3 text-sm font-medium text-amber-700 dark:text-amber-300">
+                No synthetic case matches "{searchQuery.trim()}". Try a demo CNR, case number, party name or court below.
+              </p>
+            )}
 
             {/* Quick Demo Case Chips */}
             <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-xs">

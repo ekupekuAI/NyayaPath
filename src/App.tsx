@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   DEMO_CASES, 
   INITIAL_EVENTS, 
@@ -24,7 +24,7 @@ import { EventExplanationDetail } from './components/EventExplanationDetail';
 import { OrdersDocumentViewer } from './components/OrdersDocumentViewer';
 import { CourtStaffPortal } from './components/CourtStaffPortal';
 import { AccessibilityModal } from './components/AccessibilityModal';
-import { generateAIExplanation } from './lib/aiExplanationService';
+import { createFallbackExplanation, generateAIExplanation } from './lib/aiExplanationService';
 
 export default function App() {
   // Navigation & Surface State
@@ -61,7 +61,13 @@ export default function App() {
   const caseEvents = events.filter(e => e.caseId === currentCase.id);
   const caseOrders = orders.filter(o => o.caseId === currentCase.id);
   const latestEvent = caseEvents[caseEvents.length - 1];
-  const currentExplanation = latestEvent ? explanations[latestEvent.id] : undefined;
+  const currentExplanation = latestEvent ? explanations[latestEvent.id] ?? createFallbackExplanation(latestEvent) : undefined;
+
+  // Tailwind sizes are rem-based, so scaling the root font size scales the whole UI.
+  useEffect(() => {
+    const sizes = { normal: '100%', large: '112.5%', xlarge: '125%' };
+    document.documentElement.style.fontSize = sizes[accessibilitySettings.fontSize];
+  }, [accessibilitySettings.fontSize]);
 
   // Audio speech narration handler
   const handleSpeak = (text: string) => {
@@ -107,7 +113,7 @@ export default function App() {
   };
 
   // CNR or Keyword Search
-  const handleSearch = (query: string) => {
+  const handleSearch = (query: string): boolean => {
     const q = query.trim().toLowerCase();
     const match = cases.find(c => 
       c.cnr.toLowerCase().includes(q) || 
@@ -116,13 +122,10 @@ export default function App() {
       c.court.toLowerCase().includes(q)
     );
 
-    if (match) {
-      setSelectedCaseId(match.id);
-      setCitizenViewMode('overview');
-    } else {
-      setSelectedCaseId('case-cs-184-2024');
-      setCitizenViewMode('overview');
-    }
+    if (!match) return false;
+    setSelectedCaseId(match.id);
+    setCitizenViewMode('overview');
+    return true;
   };
 
   // Event Selection for Detail View
@@ -211,20 +214,12 @@ export default function App() {
     }, 400);
   };
 
-  // Font size class mapping
-  const fontSizeClass = 
-    accessibilitySettings.fontSize === 'large' 
-      ? 'text-lg' 
-      : accessibilitySettings.fontSize === 'xlarge' 
-      ? 'text-xl' 
-      : 'text-base';
-
   return (
     <div className={`min-h-screen transition-colors ${
       accessibilitySettings.highContrast 
         ? 'dark bg-black text-white font-sans' 
         : 'bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans'
-    } ${fontSizeClass}`}>
+    }`}>
       {/* Top Prototype Trust Notice Banner */}
       <TrustBanner />
 
@@ -260,6 +255,7 @@ export default function App() {
                   explanation={currentExplanation}
                   onViewTimeline={() => setCitizenViewMode('timeline')}
                   onViewOrders={() => setCitizenViewMode('orders')}
+                  ordersCount={caseOrders.length}
                   onExplainEvent={handleSelectEvent}
                   onSpeak={handleSpeak}
                   language={accessibilitySettings.language}
@@ -284,12 +280,14 @@ export default function App() {
                 event={selectedEvent}
                 caseData={currentCase}
                 order={caseOrders.find(o => o.id === selectedEvent.relatedOrderId)}
-                explanation={explanations[selectedEvent.id]}
+                explanation={explanations[selectedEvent.id] ?? createFallbackExplanation(selectedEvent)}
                 onBack={() => setCitizenViewMode('overview')}
                 onViewOrder={handleSelectOrder}
                 onSpeak={handleSpeak}
                 isSpeaking={isSpeaking}
                 onRegenerateExplanation={handleRegenerateExplanation}
+                simplified={accessibilitySettings.simplifiedLanguage}
+                onToggleSimplified={(value) => setAccessibilitySettings(prev => ({ ...prev, simplifiedLanguage: value }))}
                 language={accessibilitySettings.language}
               />
             )}
@@ -301,7 +299,6 @@ export default function App() {
                 selectedOrder={selectedOrder || undefined}
                 onSelectOrder={(ord) => setSelectedOrder(ord)}
                 onBack={() => setCitizenViewMode('overview')}
-                onExplainOrder={(ord) => {}}
                 language={accessibilitySettings.language}
               />
             )}

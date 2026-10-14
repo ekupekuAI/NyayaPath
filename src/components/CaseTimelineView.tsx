@@ -103,6 +103,12 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
 
       {/* Vertical Timeline Structure */}
       <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-slate-300 dark:before:bg-slate-700">
+        {filteredEvents.length === 0 && (
+          <div className="p-5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm text-slate-600 dark:text-slate-400">
+            {events.length === 0 ? 'No case updates have been published for this case yet.' : 'No updates match this filter.'}
+          </div>
+        )}
+
         {filteredEvents.map((evt, index) => {
           const isLatest = index === filteredEvents.length - 1;
           const explanation = explanations[evt.id];
@@ -203,7 +209,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
                     Upcoming Scheduled Hearing
                   </span>
                   <h4 className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
-                    Final Oral Arguments Listing
+                    Next Listed Hearing
                   </h4>
                 </div>
                 <div className="px-3.5 py-1.5 bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-1.5 shadow-sm">
@@ -212,7 +218,7 @@ export const CaseTimelineView: React.FC<CaseTimelineViewProps> = ({
                 </div>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-                Both parties' counsels are scheduled to place written arguments on record and conclude final submissions before Hon'ble Presiding Officer, Bench-IV.
+                The record lists the next hearing on {caseData.nextHearingDate}. Check the latest update for its stated purpose.
               </p>
             </div>
           </div>

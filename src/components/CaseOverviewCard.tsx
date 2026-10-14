@@ -22,6 +22,7 @@ interface CaseOverviewCardProps {
   explanation?: AIExplanation;
   onViewTimeline: () => void;
   onViewOrders: () => void;
+  ordersCount: number;
   onExplainEvent: (event: CaseEvent) => void;
   onSpeak: (text: string) => void;
   language: LanguageCode;
@@ -33,13 +34,17 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
   explanation,
   onViewTimeline,
   onViewOrders,
+  ordersCount,
   onExplainEvent,
   onSpeak,
   language
 }) => {
   const t = MULTILINGUAL_TRANSLATIONS[language]?.['general'] || MULTILINGUAL_TRANSLATIONS.en['general'];
 
-  const speechContent = `${t.recentUpdate}. ${t.whatHappenedTitle} ${explanation?.what_happened || latestEvent?.officialText}. ${t.whatItMeansTitle} ${explanation?.what_it_means}. ${t.actionTitle} ${explanation?.action_required}. ${t.importantDateTitle} ${caseData.nextHearingDate}.`;
+  const noUpdates = 'No case updates have been published for this case yet.';
+  const speechContent = latestEvent
+    ? `${t.recentUpdate}. ${t.whatHappenedTitle} ${explanation?.what_happened || latestEvent.officialText}. ${t.whatItMeansTitle} ${explanation?.what_it_means || ''}. ${t.actionTitle} ${explanation?.action_required || ''}. ${t.importantDateTitle} ${caseData.nextHearingDate || 'None specified'}.`
+    : `${noUpdates} ${t.importantDateTitle} ${caseData.nextHearingDate || 'None specified'}.`;
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-all">
@@ -155,7 +160,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
               <span>{t.whatHappenedTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-              {explanation?.what_happened || latestEvent?.officialText || 'Case hearing proceedings were conducted.'}
+              {explanation?.what_happened || latestEvent?.officialText || noUpdates}
             </p>
           </div>
 
@@ -166,7 +171,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
               <span>{t.whatItMeansTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-              {explanation?.what_it_means || 'The case is advancing through its regular civil procedure milestones.'}
+              {explanation?.what_it_means || 'The available case information does not specify this.'}
             </p>
           </div>
 
@@ -176,7 +181,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
               <span>{t.whatNextTitle}</span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-              {explanation?.what_happens_next || `The next listed date is ${caseData.nextHearingDate}.`}
+              {explanation?.what_happens_next || (caseData.nextHearingDate ? `The next listed date is ${caseData.nextHearingDate}.` : 'The available case information does not specify this.')}
             </p>
           </div>
 
@@ -197,7 +202,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
-              <strong>Grounded AI Explanation:</strong> {explanation?.confidence_note || 'Verified against court bench record'} • {t.disclaimerText}
+              <strong>{explanation?.source === 'fallback' ? 'Rule-based summary:' : 'Grounded AI Explanation:'}</strong> {explanation?.confidence_note || (latestEvent ? 'Verified against court bench record' : 'No published record yet')} • {t.disclaimerText}
             </span>
           </div>
           <span className="font-mono text-[11px] text-slate-400">Synthetic Mock Data</span>
@@ -220,7 +225,7 @@ export const CaseOverviewCard: React.FC<CaseOverviewCardProps> = ({
             className="w-full sm:w-auto px-6 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
           >
             <FileText className="w-4 h-4 text-indigo-500" />
-            <span>View Court Order Sheets (3)</span>
+            <span>View Court Order Sheets ({ordersCount})</span>
           </button>
         </div>
       </div>

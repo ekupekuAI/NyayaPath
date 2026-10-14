@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Order, Case, AIExplanation, LanguageCode } from '../types';
 import { MULTILINGUAL_TRANSLATIONS } from '../data/mockDatabase';
+import { generateOrderExplanation } from '../lib/aiExplanationService';
 
 interface OrdersDocumentViewerProps {
   orders: Order[];
@@ -21,7 +22,6 @@ interface OrdersDocumentViewerProps {
   selectedOrder?: Order;
   onSelectOrder: (order: Order) => void;
   onBack: () => void;
-  onExplainOrder: (order: Order) => void;
   language: LanguageCode;
 }
 
@@ -31,31 +31,19 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
   selectedOrder,
   onSelectOrder,
   onBack,
-  onExplainOrder,
   language
 }) => {
-  const [activeOrder, setActiveOrder] = useState<Order>(selectedOrder || orders[0]);
+  const [activeOrder, setActiveOrder] = useState<Order | undefined>(selectedOrder || orders[0]);
   const [isExplaining, setIsExplaining] = useState(false);
   const [orderExplanation, setOrderExplanation] = useState<AIExplanation | null>(null);
 
-  const handleExplain = (order: Order) => {
+  const handleExplain = async (order: Order) => {
     setIsExplaining(true);
-    // Instant safe explain for order
-    setTimeout(() => {
-      setOrderExplanation({
-        id: `exp-order-${order.id}`,
-        eventId: order.id,
-        summary: `Court order directing written submissions and setting the next date on 14 September 2026.`,
-        what_happened: `The judge heard plaintiff arguments and agreed to give the respondent 2 weeks to file written points.`,
-        what_it_means: `Both sides must complete their written arguments before the next hearing date.`,
-        what_happens_next: `Final oral arguments will be concluded on 14 September 2026.`,
-        action_required: `Ensure your advocate receives and reviews the advance copy of the respondent's written submissions before 08 September.`,
-        important_date: `08 September 2026 (Written submission deadline) / 14 September 2026 (Final hearing)`,
-        confidence_note: `Grounded directly in text of ${order.title}`,
-        disclaimer: 'This is a plain-language explanation of the supplied case information, not legal advice.'
-      });
+    try {
+      setOrderExplanation(await generateOrderExplanation(order, caseData, language));
+    } finally {
       setIsExplaining(false);
-    }, 600);
+    }
   };
 
   return (
@@ -132,6 +120,11 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
         </div>
 
         {/* Right Side: Order Document Viewer + AI Explanation (8 Cols) */}
+        {!activeOrder ? (
+          <div className="lg:col-span-12 p-8 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400">
+            No order sheets have been published for this case yet.
+          </div>
+        ) : (
         <div className="lg:col-span-8 space-y-6">
           {/* Action Bar for Selected Order */}
           <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
@@ -190,6 +183,14 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
                 </div>
               </div>
 
+              {orderExplanation.error && (
+                <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                  {orderExplanation.error.includes('OPENAI_API_KEY')
+                    ? 'Rule-based summary: add OPENAI_API_KEY to the server .env file and restart to enable AI explanations.'
+                    : orderExplanation.error}
+                </p>
+              )}
+
               <div className="text-[11px] text-slate-500 dark:text-slate-400 pt-2 border-t border-indigo-100 dark:border-indigo-900/50 flex items-center justify-between">
                 <span>{orderExplanation.disclaimer}</span>
                 <span className="font-semibold text-emerald-600 dark:text-emerald-400">Strictly Grounded</span>
@@ -205,7 +206,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
                 <span>Synthetic demo document • For demonstration only</span>
               </div>
               <h3 className="text-base sm:text-lg font-bold uppercase tracking-wide">
-                IN THE COURT OF THE PRINCIPAL DISTRICT & SESSIONS JUDGE, HYDERABAD
+                {caseData.court}
               </h3>
               <p className="text-xs font-mono font-sans text-slate-600 dark:text-slate-400">
                 CNR: {caseData.cnr} | {caseData.caseNumber}
@@ -222,6 +223,7 @@ export const OrdersDocumentViewer: React.FC<OrdersDocumentViewerProps> = ({
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* dark: follows the OS setting and also the .dark class used by High Contrast mode. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    @slot;
+  }
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+}
