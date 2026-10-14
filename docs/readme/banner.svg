@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-labelledby="t d">
+  <title id="t">NyayaPath</title>
+  <desc id="d">Understand your case. Know your next step. Plain-language court case updates for citizens.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1e4a"/>
+      <stop offset="0.45" stop-color="#1e3a8a"/>
+      <stop offset="0.75" stop-color="#134e4a"/>
+      <stop offset="1" stop-color="#0b1e4a"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#e0e7ff"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <clipPath id="frame"><rect width="1200" height="320" rx="24"/></clipPath>
+  </defs>
+  <style>
+    .sans { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, 'Noto Sans', 'Nirmala UI', sans-serif; }
+    .drift { animation: drift 14s ease-in-out infinite alternate; }
+    .orb { animation: pulse 6s ease-in-out infinite; transform-origin: 980px 150px; }
+    .halo { animation: halo 4s ease-in-out infinite; }
+    .in1 { opacity: 0; animation: rise 0.9s ease-out 0.1s forwards; }
+    .in2 { opacity: 0; animation: rise 0.9s ease-out 0.45s forwards; }
+    .in3 { opacity: 0; animation: rise 0.9s ease-out 0.8s forwards; }
+    .in4 { opacity: 0; animation: rise 0.9s ease-out 1.15s forwards; }
+    .scale { animation: tilt 5s ease-in-out infinite; transform-origin: 980px 104px; }
+    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-600px); } }
+    @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
+    @keyframes halo { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.6; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes tilt { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .drift, .orb, .halo, .scale { animation: none; }
+      .in1, .in2, .in3, .in4 { animation: none; opacity: 1; }
+    }
+  </style>
+
+  <g clip-path="url(#frame)">
+    <rect class="drift" x="0" y="0" width="1800" height="320" fill="url(#bg)"/>
+    <g opacity="0.08" stroke="#ffffff" stroke-width="1">
+      <path d="M0 64H1200M0 128H1200M0 192H1200M0 256H1200"/>
+      <path d="M150 0V320M300 0V320M450 0V320M600 0V320M750 0V320M900 0V320M1050 0V320"/>
+    </g>
+    <circle class="orb" cx="980" cy="150" r="170" fill="url(#orb)"/>
+
+    <!-- Scales of justice -->
+    <g class="in1" fill="none" stroke="#fde68a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M980 70V226M940 226H1020"/>
+      <circle cx="980" cy="66" r="7" fill="#fde68a"/>
+      <g class="scale">
+        <path d="M900 104H1060"/>
+        <path d="M915 104L890 168M915 104L940 168M884 168Q915 196 946 168Z"/>
+        <path d="M1045 104L1020 168M1045 104L1070 168M1014 168Q1045 196 1076 168Z"/>
+      </g>
+    </g>
+
+    <!-- Title with soft glow -->
+    <text class="sans halo" x="72" y="150" font-size="84" font-weight="800" fill="#93c5fd" filter="url(#glow)">NyayaPath</text>
+    <text class="sans in1" x="72" y="150" font-size="84" font-weight="800" fill="url(#title)" letter-spacing="-1">NyayaPath</text>
+    <text class="sans in2" x="76" y="200" font-size="30" font-weight="600" fill="#e2e8f0">Understand your case. Know your next step.</text>
+    <text class="sans in3" x="76" y="244" font-size="20" fill="#a5b4fc">Plain-language court case updates · timelines · next steps · 5 Indian languages</text>
+    <g class="in4">
+      <rect x="76" y="266" width="324" height="30" rx="15" fill="#fbbf24" fill-opacity="0.15" stroke="#fbbf24" stroke-opacity="0.5"/>
+      <text class="sans" x="92" y="286" font-size="14" font-weight="600" fill="#fde68a">Synthetic demo data · Not legal advice</text>
+    </g>
+  </g>
+</svg>

@@ -65,7 +65,7 @@ export default function App() {
 
   // Tailwind sizes are rem-based, so scaling the root font size scales the whole UI.
   useEffect(() => {
-    const sizes = { normal: '100%', large: '112.5%', xlarge: '125%' };
+    const sizes = { normal: '100%', large: '120%', xlarge: '140%' };
     document.documentElement.style.fontSize = sizes[accessibilitySettings.fontSize];
   }, [accessibilitySettings.fontSize]);
 
